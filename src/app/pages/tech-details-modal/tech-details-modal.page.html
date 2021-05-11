@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{techName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-card>
+    <img src="./assets/images/banner1.png" class="w3-circle"/>
+    
+    <ion-card-header>
+      <h4><ion-icon name="checkmark-circle" color="primary"></ion-icon> <span style="font-size:12px;"> Verified By SabSudhrega</span></h4>
+      <ion-card-title>Speciality</ion-card-title>
+      <p>{{speciality}}</p>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card-title>Address</ion-card-title>
+      {{address}}
+    </ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" class="ion-text-center" (click)=phoneCall()>
+          <ion-icon name="call" style="font-size: 24px;"  color="primary" class="vibrate"></ion-icon>
+        </ion-col>
+        <ion-col size="6" class="ion-text-center" (click)=whatsApp()>
+          <ion-icon name="logo-whatsapp" style="font-size: 24px;" color="success" class="vibrate"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>

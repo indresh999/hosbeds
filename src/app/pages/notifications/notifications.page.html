@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Join us</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <h5 style="color: #3171e0; text-align: center;">If you have a skill to work as a <span style="font-weight: bold; color:#e0b500">Technician</span>, then</h5>
+    <h4 style="font-weight: bold; text-align: center; color: #3171e0;">Join Us</h4>
+    <ion-list padding>
+       <!-- Search Bar -->
+ 
+      <ion-item>
+        <ion-label position="stacked">Select Categories</ion-label>
+        <ion-input autocomplete="off" type="text" name="categories" [(ngModel)]="postData.categories" (click)=categoryModal()></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Full name</ion-label>
+        <ion-input autocomplete="off" type="text" name="name" [(ngModel)]="postData.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Mobile</ion-label>
+        <ion-input autocomplete="off" type="text" name="mobile" [(ngModel)]="postData.mobile"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">WhatsApp number</ion-label>
+        <ion-input autocomplete="off" type="text" name="whatsapp" [(ngModel)]="postData.whatsapp"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Minimum service charge</ion-label>
+        <ion-input autocomplete="off" type="number" name="basefare" [(ngModel)]="postData.basefare"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Experience</ion-label>
+        <ion-input autocomplete="off" type="number" name="experience" [(ngModel)]="postData.experience"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Profile photo</ion-label>
+        <ion-input autocomplete="off" type="file" name="file" [(ngModel)]="postData.file"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Address</ion-label>
+        <ion-textarea autocomplete="off" name="address" [(ngModel)]="postData.address"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">City</ion-label>
+        <ion-input autocomplete="off" name="city" [(ngModel)]="postData.city"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">State</ion-label>
+        <ion-input autocomplete="off" name="state" [(ngModel)]="postData.state"></ion-input>
+      </ion-item>
+      <ion-button expand="block" share="round" color="warning" (click)="createTech()" padding>Next</ion-button>
+    </ion-list>
+
+</ion-content>

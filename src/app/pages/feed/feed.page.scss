@@ -1,0 +1,101 @@
+ion-searchbar {
+    border-radius: 30px !important;
+    height: 50px;
+}
+
+.item-checkbox{
+  ion-checkbox{
+      button.item-cover{
+          width: 15%;
+          z-index:99;
+      }
+  }
+
+  ion-label{
+      button.item-cover{
+          width: 85%;
+          right: 0;
+          left: auto;
+      }
+  }
+}
+
+ion-checkbox{
+  background: #FFFFFF;
+   border-width: 1px !important;
+   border-style: solid !important;
+   border-radius: 4px;
+   border-color : #e5322c!important;
+   --height : 25px;
+   --width: 25px;
+   --checkmark-color:#e5322c;
+   --background-checked: #FFFFFF;
+   --border-color: #FFFFFF;
+   --border-color-checked :#FFFFFF;
+ }
+
+ ion-toolbar {
+  --background-color: transparent;
+  --ion-color-base: transparent !important;
+}
+.my-custom-class {
+  --background: #f7baba;
+}
+.my-custom-class .action-sheet-group {
+  background: #f7baba;
+}
+
+.EditionIcon {
+  color : #e5322c!important;
+}
+
+ion-segment-button {
+  height: 30px;
+  min-height: 30px;
+  --border-radius: 4px;
+  ion-label {
+    margin: 0;
+  }
+}
+
+ion-segment
+{
+  padding: 6px;
+}
+ion-segment-button
+{
+  border-radius:10px;box-shadow: 10px 15px 10px rgb(182 30 30 / 59%);
+}
+ion-segment-button>ion-label
+{
+  font-size:12px; font-weight:bold;
+}
+ion-slide
+{
+    padding:10px;
+}
+.w3-circle{border-radius:50%}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -20px;
+    width: 100px;
+    height: 100px;
+  }
+  
+  .card-content-md {
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    text-align: center;
+    line-height: 1;
+    color:#393185;
+}
+ion-card-content
+{
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}

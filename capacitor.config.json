@@ -1,0 +1,7 @@
+{
+  "appId": "io.sbitm.hosbeds",
+  "appName": "HosBeds",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}

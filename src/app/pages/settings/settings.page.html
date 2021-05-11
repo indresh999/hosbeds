@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+  
+    <ion-item>
+      <ion-icon name="share" color="tertiary" slot="start"></ion-icon>
+      <ion-label>
+        <ion-text color="dark">Invite Friends</ion-text>
+      </ion-label>
+      <ion-icon name="arrow-dropright-circle" color="primary" item-end></ion-icon>
+    </ion-item>
+
+
+    <ion-list-header>
+      <ion-text color="medium">CUSTOMER SUPPORT</ion-text>
+    </ion-list-header>
+ 
+    <ion-item>
+      <ion-icon name="mail" color="danger" slot="start"></ion-icon>
+      <ion-label>
+        <ion-text color="dark">Email us </ion-text>
+      </ion-label>
+      <ion-icon name="arrow-dropright-circle" color="primary" item-end></ion-icon>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-text color="medium">ABOUT US</ion-text>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-icon name="headset" color="pink" slot="start"></ion-icon>
+      <ion-label>
+        <ion-text color="dark">About Company</ion-text>
+      </ion-label>
+      <ion-icon name="arrow-dropright-circle" color="primary" item-end></ion-icon>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="mail" color="danger" slot="start"></ion-icon>
+      <ion-label>
+        <ion-text color="dark">Privacy Policy </ion-text>
+      </ion-label>
+      <ion-icon name="arrow-dropright-circle" color="primary" item-end></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="mail" color="danger" slot="start"></ion-icon>
+      <ion-label>
+        <ion-text color="dark">Terms & Conditions </ion-text>
+      </ion-label>
+      <ion-icon name="arrow-dropright-circle" color="primary" item-end></ion-icon>
+    </ion-item>
+
+    <!-- <ion-item>
+      <ion-icon name="mail" color="danger" slot="start"></ion-icon>
+      <ion-label>
+        <ion-text color="dark">Cancellation Policy </ion-text>
+      </ion-label>
+      <ion-icon name="arrow-dropright-circle" color="primary" item-end></ion-icon>
+    </ion-item> -->
+
+    <ion-item (click)="logoutAction()">
+      <ion-icon name="log-out" color="primary" slot="start"></ion-icon>
+      <ion-label>
+        <ion-text color="dark">Logout</ion-text>
+      </ion-label>
+      <ion-icon name="arrow-dropright-circle" color="primary" item-end></ion-icon>
+    </ion-item>
+
+
+  </ion-list>
+</ion-content>

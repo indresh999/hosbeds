@@ -1,0 +1,59 @@
+ion-searchbar {
+    border-radius: 30px !important;
+    height: 50px;
+}
+.EditionIcon {
+  color : #e5322c!important;
+}
+
+ion-slide
+{
+    padding:10px;
+}
+.w3-circle{border-radius:50%}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+    width: 70px;
+    height: 70px;
+}
+  
+  .card-content-md {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: center;
+    line-height: 0.5;
+}
+ion-col
+{
+  text-align: center;
+}
+ion-segment
+{
+  padding: 6px;
+}
+ion-segment-button
+{
+  border-radius:10px;
+  box-shadow: 6px 8px 8px rgb(57 49 133 / 23%);
+  margin: 4px;
+  height: 20px;
+  border: 1px solid blue;
+}
+ion-segment-button>ion-label
+{
+  font-size:12px; 
+  font-weight:bold;
+}
+.card-content{
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  font-size: 12px; 
+  text-transform: capitalize;
+}
+

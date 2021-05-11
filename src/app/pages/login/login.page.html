@@ -1,0 +1,19 @@
+
+<ion-content padding='true'>
+    <div class="center">
+      <img src="assets/images/logo.png" class="logo"/>
+    </div>
+  <form>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Full name</ion-label>
+        <ion-input autocomplete="off" type="text" name="name" [(ngModel)]="postData.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Mobile</ion-label>
+        <ion-input autocomplete="off" type="text" name="mobile" [(ngModel)]="postData.mobile"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" share="round" color="primary" (click)="loginAction()">Next</ion-button>
+  </form>
+</ion-content>

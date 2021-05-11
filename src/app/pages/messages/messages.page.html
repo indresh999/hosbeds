@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Techicians</ion-title>
+    <ion-icon name="funnel"  color="warning" slot="end" padding (click)=openSort()></ion-icon>
+  </ion-toolbar>
+</ion-header>
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)">
+<!--  
+  <ion-grid style="margin-top:8px;">
+    <ion-row>
+      <ion-col size="6"  style="box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px; margin-top:20px;" (click)=techDetailsModal()>
+        <ion-card-content  style="display: block;">
+          <img src="assets/images/banner1.png" class="w3-circle center" style="box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;">
+        </ion-card-content>
+        <ion-row>
+          <ion-col style="text-align:center">
+            <span style="font-size: 12px;"><b>Amit Sharma</b></span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="text-align:center">
+            <span style="font-size: 12px;">Kharghar</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="text-align:center;">
+            <span style="font-size: 12px;">Sector 12, Panvel</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-badge color="primary">3.5
+              <ion-icon name="star" color="warning"></ion-icon>
+            </ion-badge>
+          </ion-col>
+          <ion-col size="6">
+            <ion-icon name="pin" color="warning" style="font-size:14px;"></ion-icon><span style="font-size: 12px; font-weight: bold;"> 1.4 Km</span>  
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="6" style="box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px; margin-top:20px;">
+        <ion-card-content  style="display: block;">
+          <img src="assets/images/banner1.png" class="w3-circle center" style="box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;">
+        </ion-card-content>
+        <ion-row>
+          <ion-col style="text-align:center">
+            <span style="font-size: 12px;"><b>Amit Sharma</b></span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="text-align:center">
+            <span style="font-size: 12px;">Kharghar</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="text-align:center;">
+            <span style="font-size: 12px;">Sector 12, Panvel</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-badge color="primary">3.5
+              <ion-icon name="star" color="warning"></ion-icon>
+            </ion-badge>
+          </ion-col>
+          <ion-col size="6">
+            <ion-icon name="pin" color="warning" style="font-size:14px;"></ion-icon><span style="font-size: 12px; font-weight: bold;"> 1.4 Km</span>  
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="6" style="box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px; margin-top:20px;">
+        <ion-card-content  style="display: block;">
+          <img src="assets/images/banner1.png" class="w3-circle center" style="box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;">
+        </ion-card-content>
+        <ion-row>
+          <ion-col style="text-align:center">
+            <span style="font-size: 12px;"><b>Amit Sharma</b></span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="text-align:center">
+            <span style="font-size: 12px;">Kharghar</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="text-align:center;">
+            <span style="font-size: 12px;">Sector 12, Panvel</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <ion-badge color="primary">3.5
+              <ion-icon name="star" color="warning"></ion-icon>
+            </ion-badge>
+          </ion-col>
+          <ion-col size="6">
+            <ion-icon name="pin" color="warning" style="font-size:14px;"></ion-icon><span style="font-size: 12px; font-weight: bold;"> 1.4 Km</span>  
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+-->
+
+<ion-segment [(ngModel)]="selectTabs" color="warning" mode="ios" scrollable (ionChange)="segmentChanged($event)">
+  <ion-segment-button [value]=item.name *ngFor="let item of categorydata" style="margin:4px;">
+    <ion-label>{{item.name}}</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+<div *ngFor="let item of categorydata">
+<div *ngIf="selectTabs == item.name">
+  <ion-grid style="margin-top: 8px;">
+    <ion-row>
+      <ion-col size="4" style="padding:0px;" (click)=techDetailsModal(item.mobile) *ngFor="let item of techsData">
+        <ion-card>
+          <img src="assets/images/banner1.png" class="w3-circle center" style="box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px;">
+
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" class="card-content">{{item.name}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <ion-badge color="primary">{{item.rating}}
+                  <ion-icon name="star" color="warning"></ion-icon>
+                </ion-badge>
+              </ion-col>
+              <ion-col size="12">
+                <ion-icon name="pin" color="warning" style="font-size:14px;"></ion-icon><span style="font-size: 12px; font-weight: bold;" style="font-size: 12px;"> 1.4 Km</span>  
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+</div>
+
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

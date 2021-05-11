@@ -1,0 +1,8 @@
+{
+  "name": "HosBeds",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}
