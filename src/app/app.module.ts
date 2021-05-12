@@ -15,22 +15,26 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { BedsDetailsModalPageModule } from './pages/beds-details-modal/beds-details-modal.module';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     AutoCompleteModule,
-    CategoryListModalPageModule,
-    TechDetailsModalPageModule,
-    LocationModalPageModule,
+    HttpClientModule,
     BrowserModule,
-    IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    BedsDetailsModalPageModule,
+    LocationModalPageModule,
+    TechDetailsModalPageModule,
+    IonicModule.forRoot(),
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    CallNumber,
     HttpClientModule,
     Geolocation,
     NativeGeocoder,
@@ -40,4 +44,4 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

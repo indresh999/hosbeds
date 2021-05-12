@@ -7,7 +7,7 @@ import { HttpService } from './http.service';
 })
 export class FeedService {
   feedData$ = new BehaviorSubject<any>([]);
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService) { }
 
   changeFeedData(data: any) {
     this.feedData$.next(data);
@@ -15,7 +15,7 @@ export class FeedService {
 
   getCurrentFeedData() {
     return this.feedData$.getValue();
-  } 
+  }
 
   updateFeedData(newFeed: any) {
     let data = [];
@@ -34,7 +34,7 @@ export class FeedService {
     this.changeFeedData(newFeedUpdateData);
   }
 
-  allServices(postData: any): Observable<any> {
+  allHospitals(postData: any): Observable<any> {
     return this.httpService.post('api/services/services', postData);
   }
   banners(postData: any): Observable<any> {

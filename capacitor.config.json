@@ -3,5 +3,15 @@
   "appName": "HosBeds",
   "bundledWebRuntime": false,
   "npmClient": "npm",
-  "webDir": "www"
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "splashFullScreen": false,
+      "splashImmersive": false,
+      "androidScaleType": "CENTER_CROP",
+      "launchShowDuration": 20000
+    }
+  },
+  "cordova": {}
 }

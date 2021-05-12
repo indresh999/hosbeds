@@ -1,43 +1,67 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar (click)=locationModal()>
-    <ion-icon name="pin" color="primary" style="font-size:18px; margin-left: 8px; font-weight: bold;"></ion-icon> Betul, Madhya Pradesh
+    <ion-icon name="pin" color="primary" style="font-size:18px; margin-left: 8px; font-weight: bold;"></ion-icon> Betul,
+    Madhya Pradesh
   </ion-toolbar>
-  <!-- <ion-searchbar type="text" debounce="500" mode="ios" (ionChange)="getItems($event)" placeholder="Electricians, Plumbers etc.."></ion-searchbar>
+ <ion-searchbar type="text" debounce="500" mode="ios" (ionChange)="getItems($event)" placeholder="Electricians, Plumbers etc.."></ion-searchbar>
   <ion-list *ngIf="isItemAvailable" style="position: absolute; width: 100%; opacity:0.95;">
       <ion-item *ngFor="let item of items" (click)="techByCategory(item)">{{ item }}</ion-item>
-  </ion-list> -->
+  </ion-list> 
+</ion-header> -->
+
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Hospital Beds</ion-title>
+    <ion-icon name="locate" color="warning" slot="end" padding (click)=checkGPSPermission() style="height: 25px;
+    width: 25px;"></ion-icon>
+  </ion-toolbar>
 </ion-header>
 <ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)">
 
-  <ion-slides pager="true" [options]="slideOpts" style="height:140px;"  >
+  <ion-slides pager="true" [options]="slideOpts" style="height:140px;">
     <ion-slide *ngFor="let item of banner">
       <img src="assets/images/banner1.png" style="width: 100% !important;object-fit: cover;border-radius:5px;" />
+    </ion-slide>
+    <ion-slide *ngFor="let item of banner">
+      <img src="assets/images/banner2.png" style="width: 100% !important;object-fit: cover;border-radius:5px;" />
     </ion-slide>
   </ion-slides>
 
   <ion-grid>
     <ion-row>
-   
-      <ion-col size="6" style="padding:0px;" *ngFor="let item of allCategory" (click)=techByCategory(item.name)>
+
+      <ion-col size="6" style="padding:0px;" *ngFor="let item of allCategory">
         <ion-card>
           <ion-card-content no-padding style="display: block;">
             <img src="assets/images/bed.jpg" style="height:80px; margin:auto; width:80px;">
           </ion-card-content>
-          <ion-card-content  style="display: block; font-size:12px; font-weight: bold;   text-transform: capitalize;height: 32px;">
-            <p><b>{{item.name}}</b></p>
+          <ion-card-content
+            style="display: block; font-size:12px; font-weight: bold;   text-transform: capitalize;height: 32px;">
+            <p style="color: red;"><b>{{item.name}}</b></p>
           </ion-card-content>
-          <ion-card-content  style="display: block; font-size:12px; font-weight: bold;   text-transform: capitalize;height: 32px;">
-            <p><b>{{item.name}}</b></p>
+          <ion-card-content
+            style="display: block; font-size:12px; font-weight: bold;   text-transform: capitalize;height: 32px;">
+            <p style="color: red;"><b>Total Beds: {{item.total_beds}}</b></p>
           </ion-card-content>
+          <ion-card-content
+            style="display: block; font-size:12px; font-weight: bold;   text-transform: capitalize;height: 32px;">
+            <p><b>Available Beds: {{item.avail_beds}}</b></p>
+          </ion-card-content>
+          <p
+            style="display: block; font-size:12px; text-align: center; font-weight: bold; padding:2px;text-transform: capitalize;height: 32px;">
+            <b>{{item.address}}</b>
+          </p>
+          <ion-button expand="block" share="round" color="primary" (click)="callNow(item.mobile)">Call now</ion-button>
         </ion-card>
       </ion-col>
-      
-     
+
+
     </ion-row>
   </ion-grid>
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  </ion-infinite-scroll> -->
 
 </ion-content>

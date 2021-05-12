@@ -10,7 +10,8 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
-  },
+  },  { path: 'beds-details-modal', loadChildren: './pages/beds-details-modal/beds-details-modal.module#BedsDetailsModalPageModule' },
+
   /*
   { path: 'location-modal', loadChildren: './pages/location-modal/location-modal.module#LocationModalPageModule' },
   { path: 'tech-details-modal', loadChildren: './pages/tech-details-modal/tech-details-modal.module#TechDetailsModalPageModule' },

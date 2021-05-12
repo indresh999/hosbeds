@@ -31,6 +31,7 @@
     "@capacitor/core": "1.1.1",
     "@capacitor/ios": "^1.1.1",
     "@ionic-native/android-permissions": "^5.32.1",
+    "@ionic-native/call-number": "^5.22.0-beta-1",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/geolocation": "^5.32.1",
     "@ionic-native/location-accuracy": "^5.32.1",
@@ -64,6 +65,7 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
+    "call-number": "^1.0.1",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -77,5 +79,10 @@
     "tslint": "~5.15.0",
     "typescript": "~3.4.3"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "cordova": {
+    "plugins": {
+      "mx.ferreyra.callnumber": {}
+    }
+  }
 }

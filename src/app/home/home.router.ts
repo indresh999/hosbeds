@@ -76,6 +76,18 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        path: 'location-modal',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../pages/location-modal/location-modal.module').then(
+                m => m.LocationModalPageModule
+              )
+          }
+        ]
+      },
     ]
   }
 ];
@@ -84,4 +96,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HomeRouter {}
+export class HomeRouter { }

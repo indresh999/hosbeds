@@ -10,6 +10,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { BedsDetailsModalPage } from '../beds-details-modal/beds-details-modal.page';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 
 @Component({
@@ -22,16 +24,19 @@ export class FeedPage implements OnInit {
   public authUser: any;
   ishidden = false;
   page_number = 1;
-  allCategory= [];
-  allCategory2= [];
-  banner =[];
+  allCategory = [];
+  allCategory2 = [];
+  banner = [];
   postData = {
     user_id: '',
     token: '',
     pid: 1,
-    limit: 10
+    limit: 10,
+    latitude: 0,
+    longitude: 0,
+    type: 1
   };
-  
+
   slideOpts = {
     speed: 400,
     slideShadows: true,
@@ -45,8 +50,7 @@ export class FeedPage implements OnInit {
   isItemAvailable = false;
   items = [];
 
-  initializeItems()
-  {
+  initializeItems() {
     this.items = this.allCategory2;
   }
   //Geocoder configuration
@@ -55,23 +59,6 @@ export class FeedPage implements OnInit {
     maxResults: 5
   };
 
-  getItems(ev: any) {
-    // Reset items back to all of the items
-    this.initializeItems();
-
-    // set val to the value of the searchbar
-    const val = ev.target.value;
-
-    // if the value is an empty string don't filter the items
-    if (val && val.trim() !== '') {
-        this.isItemAvailable = true;
-        this.items = this.items.filter((item) => {
-            return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
-        })
-    } else {
-        this.isItemAvailable = false;
-    }
-}
 
   constructor(
     private auth: AuthService,
@@ -81,7 +68,8 @@ export class FeedPage implements OnInit {
     private router: Router,
     private androidPermissions: AndroidPermissions,
     private geolocation: Geolocation,
-    private locationAccuracy: LocationAccuracy
+    private locationAccuracy: LocationAccuracy,
+    private callNumber: CallNumber
   ) {
     this.locationCoords = {
       latitude: "",
@@ -90,76 +78,50 @@ export class FeedPage implements OnInit {
       timestamp: ""
     }
     this.timetest = Date.now();
+
   }
 
   ngOnInit() {
-    this.auth.userData$.subscribe((res: any) => {
-      this.authUser = res;
-      this.categoryData(false, "");
-      this.bannerData();
-    });
+    this.checkGPSPermission();
+    this.hospitalData(false, "");
+    this.bannerData();
   }
-  async locationModal() {
-    const modal = await this.modalController.create({
-      component: LocationModalPage,
-      cssClass: 'half-modal'
-    });
-    return await modal.present();
-  }
-  async techDetailsModal(tech_id) {
-    const modal = await this.modalController.create({
-      component: TechDetailsModalPage,
-      componentProps: {
-        'tech_id': tech_id,
-      },
-      cssClass: 'half-modal'
-    });
-    return await modal.present();
-  }
-  categoryData(isFirstLoad, event) {
-    this.items=[];
+
+  hospitalData(isFirstLoad, event) {
+    this.items = [];
+    this.allCategory = []
     this.allCategory2 = []
-      this.feedService.allServices(this.postData).subscribe(
-        (res: any) => {
-          for (let i = 0; i < res.data.length; i++) {
-            this.allCategory.push(res.data[i]);
-            this.allCategory2.push(res.data[i]['name']);
-          }
-          console.log(this.allCategory);
-          if (isFirstLoad)
-            event.target.complete();
-          this.page_number++;
-          this.postData.pid = this.page_number;
-        },
-        (error: any) => {
-          this.toastService.presentToast('Somthing wrong..');
+    this.feedService.allHospitals(this.postData).subscribe(
+      (res: any) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.allCategory.push(res.data[i]);
+          this.allCategory2.push(res.data[i]['name']);
         }
-      );
+        console.log(this.allCategory);
+        if (isFirstLoad)
+          event.target.complete();
+        this.page_number++;
+        this.postData.pid = this.page_number;
+      },
+      (error: any) => {
+        this.toastService.presentToast('Somthing wrong..');
+      }
+    );
   }
   bannerData() {
-      this.feedService.banners(this.postData).subscribe(
-        (res: any) => {
-          for (let i = 0; i < res.data.length; i++) {
-            this.banner.push(res.data[i]);
-          }
-        },
-        (error: any) => {
-          this.toastService.presentToast('Somthing wrong..');
+    this.feedService.banners(this.postData).subscribe(
+      (res: any) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.banner.push(res.data[i]);
         }
-      );
+      },
+      (error: any) => {
+        this.toastService.presentToast('Somthing wrong..');
+      }
+    );
   }
-  onScroll(event) {
-    if (event.detail.deltaY > 0) {
-      this.ishidden = true;
-    } else if (event.detail.deltaY < 0) {
-      this.ishidden = false;
-    }
-  }
-  techByCategory(category)
-  {
-    console.log(category)
-    this.router.navigate(['./home/techbycategory',{ category: category }]);
-  }
+
+
   //Check if application having GPS access permission  
   checkGPSPermission() {
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
@@ -208,15 +170,86 @@ export class FeedPage implements OnInit {
       error => alert('Error requesting location permissions ' + JSON.stringify(error))
     );
   }
-   // Methos to get device accurate coordinates using device GPS
-   getLocationCoordinates() {
+  // Methos to get device accurate coordinates using device GPS
+  getLocationCoordinates() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.locationCoords.latitude = resp.coords.latitude;
       this.locationCoords.longitude = resp.coords.longitude;
       this.locationCoords.accuracy = resp.coords.accuracy;
       this.locationCoords.timestamp = resp.timestamp;
+
+      this.postData.latitude = resp.coords.latitude;
+      this.postData.longitude = resp.coords.longitude;
+
     }).catch((error) => {
       alert('Error getting location' + error);
     });
+  }
+  callNow(number) {
+    this.callNumber.callNumber(number, true)
+      .then(res => console.log('Launched dialer!', res))
+      .catch(err => console.log('Error launching dialer', err));
+  }
+
+
+
+
+
+
+
+
+  /**Extra functions */
+  async locationModal() {
+    const modal = await this.modalController.create({
+      component: LocationModalPage,
+      cssClass: 'half-modal'
+    });
+    return await modal.present();
+  }
+  async bedsDetailsModal() {
+    const modal = await this.modalController.create({
+      component: BedsDetailsModalPage,
+      cssClass: 'half-modal'
+    });
+    return await modal.present();
+  }
+  async techDetailsModal(tech_id) {
+    const modal = await this.modalController.create({
+      component: TechDetailsModalPage,
+      componentProps: {
+        'tech_id': tech_id,
+      },
+      cssClass: 'half-modal'
+    });
+    return await modal.present();
+  }
+  techByCategory(category) {
+    console.log(category)
+    this.router.navigate(['./home/techbycategory', { category: category }]);
+  }
+
+  getItems(ev: any) {
+    // Reset items back to all of the items
+    this.initializeItems();
+
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() !== '') {
+      this.isItemAvailable = true;
+      this.items = this.items.filter((item) => {
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    } else {
+      this.isItemAvailable = false;
+    }
+  }
+  onScroll(event) {
+    if (event.detail.deltaY > 0) {
+      this.ishidden = true;
+    } else if (event.detail.deltaY < 0) {
+      this.ishidden = false;
+    }
   }
 }

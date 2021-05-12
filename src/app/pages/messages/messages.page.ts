@@ -1,40 +1,209 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { FeedService } from 'src/app/services/feed.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { BedsDetailsModalPage } from '../beds-details-modal/beds-details-modal.page';
+import { LocationModalPage } from '../location-modal/location-modal.page';
 import { TechDetailsModalPage } from '../tech-details-modal/tech-details-modal.page';
-
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.page.html',
   styleUrls: ['./messages.page.scss'],
 })
 export class MessagesPage implements OnInit {
+
+
+  public authUser: any;
+  ishidden = false;
   page_number = 1;
-  ishidden =false;
-  selectTabs = '';
-  categorydata = [];
-  techsData = [];
-  techData = [];
+  allCategory = [];
+  allCategory2 = [];
+  banner = [];
   postData = {
     user_id: '',
     token: '',
     pid: 1,
-    limit: 10,
-    category:'',
-    tech_id:''
+    limit: 10
   };
-  constructor( private auth: AuthService,
+
+  slideOpts = {
+    speed: 400,
+    slideShadows: true,
+    autoplay: true,
+  };
+
+  address: string;
+  locationCoords: any;
+  timetest: any;
+
+  isItemAvailable = false;
+  items = [];
+
+  initializeItems() {
+    this.items = this.allCategory2;
+  }
+  //Geocoder configuration
+  geoencoderOptions: NativeGeocoderOptions = {
+    useLocale: true,
+    maxResults: 5
+  };
+
+
+  constructor(
+    private auth: AuthService,
     private feedService: FeedService,
     private toastService: ToastService,
-    public actionSheetController: ActionSheetController,
-    private modalController: ModalController) { }
+    private modalController: ModalController,
+    private router: Router,
+    private androidPermissions: AndroidPermissions,
+    private geolocation: Geolocation,
+    private locationAccuracy: LocationAccuracy,
+    private callNumber: CallNumber
+  ) {
+    this.locationCoords = {
+      latitude: "",
+      longitude: "",
+      accuracy: "",
+      timestamp: ""
+    }
+    this.timetest = Date.now();
 
-  ngOnInit() {
-    this.categoryData(false, "");
   }
 
+  ngOnInit() {
+    this.hospitalData(false, "");
+    this.bannerData();
+  }
+
+  hospitalData(isFirstLoad, event) {
+    this.items = [];
+    this.allCategory = []
+    this.allCategory2 = []
+    this.feedService.allHospitals(this.postData).subscribe(
+      (res: any) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.allCategory.push(res.data[i]);
+          this.allCategory2.push(res.data[i]['name']);
+        }
+        console.log(this.allCategory);
+        if (isFirstLoad)
+          event.target.complete();
+        this.page_number++;
+        this.postData.pid = this.page_number;
+      },
+      (error: any) => {
+        this.toastService.presentToast('Somthing wrong..');
+      }
+    );
+  }
+  bannerData() {
+    this.feedService.banners(this.postData).subscribe(
+      (res: any) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.banner.push(res.data[i]);
+        }
+      },
+      (error: any) => {
+        this.toastService.presentToast('Somthing wrong..');
+      }
+    );
+  }
+
+
+  //Check if application having GPS access permission  
+  checkGPSPermission() {
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+      result => {
+        if (result.hasPermission) {
+
+          //If having permission show 'Turn On GPS' dialogue
+          this.askToTurnOnGPS();
+        } else {
+
+          //If not having permission ask for permission
+          this.requestGPSPermission();
+        }
+      },
+      err => {
+        alert(err);
+      }
+    );
+  }
+  requestGPSPermission() {
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if (canRequest) {
+        console.log("4");
+      } else {
+        //Show 'GPS Permission Request' dialogue
+        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+          .then(
+            () => {
+              // call method to turn on GPS
+              this.askToTurnOnGPS();
+            },
+            error => {
+              //Show alert if user click on 'No Thanks'
+              alert('requestPermission Error requesting location permissions ' + error)
+            }
+          );
+      }
+    });
+  }
+  askToTurnOnGPS() {
+    this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+      () => {
+        // When GPS Turned ON call method to get Accurate location coordinates
+        this.getLocationCoordinates()
+      },
+      error => alert('Error requesting location permissions ' + JSON.stringify(error))
+    );
+  }
+  // Methos to get device accurate coordinates using device GPS
+  getLocationCoordinates() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.locationCoords.latitude = resp.coords.latitude;
+      this.locationCoords.longitude = resp.coords.longitude;
+      this.locationCoords.accuracy = resp.coords.accuracy;
+      this.locationCoords.timestamp = resp.timestamp;
+    }).catch((error) => {
+      alert('Error getting location' + error);
+    });
+  }
+  callNow(number) {
+    this.callNumber.callNumber(number, true)
+      .then(res => console.log('Launched dialer!', res))
+      .catch(err => console.log('Error launching dialer', err));
+  }
+
+
+
+
+
+
+
+
+  /**Extra functions */
+  async locationModal() {
+    const modal = await this.modalController.create({
+      component: LocationModalPage,
+      cssClass: 'half-modal'
+    });
+    return await modal.present();
+  }
+  async bedsDetailsModal() {
+    const modal = await this.modalController.create({
+      component: BedsDetailsModalPage,
+      cssClass: 'half-modal'
+    });
+    return await modal.present();
+  }
   async techDetailsModal(tech_id) {
     const modal = await this.modalController.create({
       component: TechDetailsModalPage,
@@ -45,7 +214,28 @@ export class MessagesPage implements OnInit {
     });
     return await modal.present();
   }
+  techByCategory(category) {
+    console.log(category)
+    this.router.navigate(['./home/techbycategory', { category: category }]);
+  }
 
+  getItems(ev: any) {
+    // Reset items back to all of the items
+    this.initializeItems();
+
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() !== '') {
+      this.isItemAvailable = true;
+      this.items = this.items.filter((item) => {
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    } else {
+      this.isItemAvailable = false;
+    }
+  }
   onScroll(event) {
     if (event.detail.deltaY > 0) {
       this.ishidden = true;
@@ -53,87 +243,4 @@ export class MessagesPage implements OnInit {
       this.ishidden = false;
     }
   }
-
-    async openSort() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Sort By',
-      cssClass: 'my-custom-class',
-      animated: false,
-      mode: 'ios',
-      buttons: [{
-        text: 'Top Technicians',
-        role: 'destructive',
-        cssClass: 'EditionIcon',
-        handler: () => {
-          console.log('Delete clicked');
-        }
-      }, {
-        text: 'Budget Technicians',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
-    await actionSheet.present();
-  }
-
-  categoryData(isFirstLoad, event) {
-
-    this.feedService.allServices(this.postData).subscribe(
-      (res: any) => {
-        for (let i = 0; i < res.data.length; i++) {
-          this.categorydata.push(res.data[i]);
-        }
-        this.selectTabs = res.data[0].name;
-        this.postData.category = this.selectTabs;
-
-        if(this.postData.category)
-        this.getTechsByCategory(false,"");
-
-        console.log(this.postData.category);
-        if (isFirstLoad)
-          event.target.complete();
-        this.page_number++;
-        this.postData.pid = this.page_number;
-      },
-      (error: any) => {
-        this.toastService.presentToast('Somthing wrong..');
-      }
-    );
-}
-  getTechsByCategory(isFirstLoad, event) {
-
-    this.techsData = [];
-    this.feedService.techByCategory(this.postData).subscribe(
-      (res: any) => {
-        for (let i = 0; i < res.data.length; i++) {
-          this.techsData.push(res.data[i]);
-          console.log(this.techsData)
-        }
-        if (isFirstLoad)
-          event.target.complete();
-        this.page_number++;
-        this.postData.pid = this.page_number;
-      },
-      (error: any) => {
-        this.toastService.presentToast('Somthing wrong..');
-      }
-    );
-}
-segmentChanged(event) {
-  this.postData.category = event.detail.value;
-  if(this.postData.category)
-  {
-    console.log(this.postData.category)
-  this.getTechsByCategory(false,"");
-  }
-}
-
 }

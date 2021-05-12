@@ -23,4 +23,4 @@ const routes: Routes = [
   ],
   declarations: [FeedPage]
 })
-export class FeedPageModule {}
+export class FeedPageModule { }
