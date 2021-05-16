@@ -137,7 +137,7 @@ export class FeedPage implements OnInit {
         }
       },
       err => {
-        alert(err);
+        //    alert(err);
       }
     );
   }

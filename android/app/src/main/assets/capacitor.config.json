@@ -1,7 +1,17 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "new-ionic-angular",
+  "appId": "io.sbitm.hosbeds",
+  "appName": "HosBeds",
   "bundledWebRuntime": false,
   "npmClient": "npm",
-  "webDir": "www"
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "splashFullScreen": false,
+      "splashImmersive": false,
+      "androidScaleType": "CENTER_CROP",
+      "launchShowDuration": 2000
+    }
+  },
+  "cordova": {}
 }
